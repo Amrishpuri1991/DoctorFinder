@@ -4,37 +4,68 @@
     Layout = "~/Areas/Patient/Views/Shared/_LayoutPatient.cshtml";
 }
 
+<script>
+    $(document).ready(function () {
+        $("#btnSubmit").click(function () {
+            //validationCheck();
 
-<main>
-    <div class="bg_color_2">
-        <div class="container margin_60_35">
-            <div id="login-2">
-                <h1>Please login to Findoctor!</h1>
-                <form>
-                    <div class="box_form clearfix">
-                        <div class="box_login">
+            var patientlogin = {
+                AdminEmail: $("#AdminEmail").val(),
+                AdminPassword: $("#AdminPassword").val()
+            };
+
+            $.ajax({
+                url: "/Patient/Home/Login",
+                type: "POST",
+                data: {AdminEmail: $("#AdminEmail").val(),AdminPassword: $("#AdminPassword").val()},
+                dataType: "text",
+                success: function (data) {
+                    //alert(data);
+                    if (data == "1") {
+                        window.location.href = "/Patient/Home/Index";//to home page
+                    }
+                    else {
+                        $("#loginerror").text("Invalid Email Or Password.!");
+                    }
+                    
+                }
+            });
+        });
+    });
+
+</script>
+
+
+<div class="bg_color_2">
+    <div class="container margin_60_35">
+        <div id="login-2">
+            <h1>Please login to Findoctor!</h1>
+            @*<form>*@
+                <div class="box_form clearfix">
+                    @*<div class="box_login">
                             <a href="#0" class="social_bt facebook">Login with Facebook</a>
                             <a href="#0" class="social_bt google">Login with Google</a>
                             <a href="#0" class="social_bt linkedin">Login with Linkedin</a>
+                        </div>*@
+                    <div class="box_Register last">
+                        <div class="form-group">
+                            <input type="email" class="form-control" placeholder="Your email address" id="AdminEmail" name="AdminEmail" >
                         </div>
-                        <div class="box_login last">
-                            <div class="form-group">
-                                <input type="email" class="form-control" placeholder="Your email address">
-                            </div>
-                            <div class="form-group">
-                                <input type="password" class="form-control" placeholder="Your password" id="password" name="password">
-                                <a href="#0" class="forgot"><small>Forgot password?</small></a>
-                            </div>
-                            <div class="form-group">
-                                <input class="btn_1" type="submit" value="Login">
-                            </div>
+                        <div class="form-group">
+                            <input type="password" class="form-control" placeholder="Your password" id="AdminPassword" name="AdminPassword" >
+                            <span id="loginerror" class="text-danger"></span>
+                            <a href="#0" class="forgot"><small>Forgot password?</small></a>
+                        </div>
+                        
+                        <div class="form-group">
+                            <input class="btn_1" type="button" value="Login" id="btnSubmit">
                         </div>
                     </div>
-                </form>
-                <p class="text-center link_bright">Do not have an account yet? <a href="/Patient/Home/Register"><strong>Register now!</strong></a></p>
-            </div>
-            <!-- /login -->
+                </div>
+            @*</form>*@
+            <p class="text-center link_bright">Do not have an account yet? <a href="/Patient/Home/Register"><strong>Register now!</strong></a></p>
         </div>
+        <!-- /login -->
     </div>
-</main>
+</div>
 

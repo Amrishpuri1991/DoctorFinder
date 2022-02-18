@@ -1,4 +1,9 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Http;
+
+@model DoctorFinder.EDM.ISessionManage
+@inject IHttpContextAccessor contextAccessor
+
+<!DOCTYPE html>
 
 <html>
 <head>
@@ -27,11 +32,10 @@
 
     <!-- Modernizr -->
     <script src="~/css/PatientModuleCSS/js/modernizr.js"></script>
+    <script src="~/css/PatientModuleCSS/js/jquery-3.6.0.min.js"></script>
 </head>
 <body>
     <div>
-
-
         <div id="preloader" class="Fixed">
             <div data-loader="circle-side"></div>
         </div>
@@ -55,23 +59,74 @@
                             </div>
                         </div>
                         <div class="col-lg-9 col-6">
-                            <ul id="top_access">
-                                <li><a href="/Patient/Home/Login"><i class="pe-7s-user"></i></a></li>
-                                <li><a href="/Patient/Home/Register"><i class="pe-7s-add-user"></i></a></li>
-                            </ul>
+                            @*<ul id="top_access" style="color #333; padding: 0 8px 17px 18px; top: 11px; font-size: 0.875rem; font-weight: 500; position: relative;">*@
+                            @*<ul id="top_access">*@
+                            @*@{
+                                    if (Model.hasSession)
+                                    {
+                                        <ul id="top_user">
+                                            <li>
+                                                <span> <a href="#">Hi, @Model.currentUserName</a></span>
+                                                <ul>
+                                                    <li style="display:block; border-bottom: 1px solid #ededed;"><a href="/Patient/Home/MyProfile" > My Profile</a></li>
+                                                    <li><a href="#"> Appointments</a></li>
+                                                </ul>
+                                            </li>
+                                            <li>
+                                                <span>  <a href="/Patient/Home/Logout">Logout</a></span>
+                                            </li>
+                                        </ul>
+                                    }
+                                    else
+                                    {
+                                        <ul id="top_access">
+                                            <li><a href="/Patient/Home/Login"><i class="pe-7s-user"></i></a></li>
+                                            <li><a href="/Patient/Home/Register"><i class="pe-7s-add-user"></i></a></li>
+                                        </ul>
+                                    }
+
+                                }*@
+                            @{
+                                var result = ViewBag.Session;
+
+                                if (result.AdminId != 0 )
+                                {
+                                    <ul id="top_user">
+                                        <li>
+                                            <span> <a href="#">Hi, @result.AdminFname</a></span>
+                                            <ul>
+                                                <li style="display:block; border-bottom: 1px solid #ededed;"><a href="/Patient/Home/MyProfile/@result.AdminFname"> My Profile</a></li>
+                                                <li><a href="#"> Appointments</a></li>
+                                            </ul>
+                                        </li>
+                                        <li>
+                                            <span>  <a href="/Patient/Home/Logout">Logout</a></span>
+                                        </li>
+                                    </ul>
+                                }
+                                else
+                                {
+                                    <ul id="top_access">
+                                        <li><a href="/Patient/Home/Login"><i class="pe-7s-user"></i></a></li>
+                                        <li><a href="/Patient/Home/Register"><i class="pe-7s-add-user"></i></a></li>
+                                    </ul>
+                                }
+                            }
+
+                            @*</ul>*@
                             <nav id="menu" class="main-menu">
                                 <ul>
                                     <li>
                                         <span><a href="/Patient/Home/Index">Home</a></span>
                                         @*<ul>
-                                            <li><a href="index.html">Home Default</a></li>
-                                            <li><a href="index-2.html">Home Version 2</a></li>
-                                            <li><a href="index-3.html">Home Version 3</a></li>
-                                            <li><a href="index-4.html">Home Version 4</a></li>
-                                            <li><a href="index-7.html">Home with Map</a></li>
-                                            <li><a href="index-6.html">Revolution Slider</a></li>
-                                            <li><a href="index-5.html">With Cookie Bar (EU law)</a></li>
-                                        </ul>*@
+                                                <li><a href="index.html">Home Default</a></li>
+                                                <li><a href="index-2.html">Home Version 2</a></li>
+                                                <li><a href="index-3.html">Home Version 3</a></li>
+                                                <li><a href="index-4.html">Home Version 4</a></li>
+                                                <li><a href="index-7.html">Home with Map</a></li>
+                                                <li><a href="index-6.html">Revolution Slider</a></li>
+                                                <li><a href="index-5.html">With Cookie Bar (EU law)</a></li>
+                                            </ul>*@
                                     </li>
                                     <li>
                                         <span><a href="#0">Pages</a></span>
@@ -136,9 +191,10 @@
                 <!-- /container -->
             </header>
             <!-- /header -->
-
-            @RenderBody()
-
+            <main>
+                @RenderBody()
+            </main>
+            <!-- /main content -->
             <footer>
                 <div class="container margin_60_35">
                     <div class="row">
@@ -208,12 +264,11 @@
         <div id="toTop"></div>
         <!-- Back to top button -->
         <!-- COMMON SCRIPTS -->
-        <script src="~/css/PatientModuleCSS/js/jquery-3.6.0.min.js"></script>
+
         <script src="~/css/PatientModuleCSS/js/common_scripts.min.js"></script>
         <script src="~/css/PatientModuleCSS/js/functions.js"></script>
 
         <!-- SPECIFIC SCRIPTS -->
-        @*<script src="~/css/PatientModuleCSS/js/video_header.js"></script>*@
         <script src="~/css/PatientModuleCSS/js/video_header.js"></script>
         <script>
             'use strict';
@@ -225,7 +280,7 @@
             });
         </script>
 
-
+        @await RenderSectionAsync("Scripts", false)
 
     </div>
 </body>

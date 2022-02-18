@@ -1,6 +1,9 @@
+using DoctorFinder.EDM;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -24,6 +27,18 @@ namespace DoctorFinder
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddSingleton<ISessionManage, SessionManage>();
+            services.AddSession(options =>
+            {
+
+                options.IdleTimeout = TimeSpan.FromMinutes(60);
+            });
+
+            services.AddDbContext<DoctorFinderDBContext>(opts =>
+                    {
+                        opts.UseSqlServer(Configuration["ConnectionStrings:Connection"]);
+                    });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -41,9 +56,9 @@ namespace DoctorFinder
             }
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-
+            app.UseSession();
             app.UseRouting();
-
+            
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

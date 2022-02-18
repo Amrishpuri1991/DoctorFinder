@@ -1,57 +1,49 @@
-﻿
+﻿@model DoctorFinder.EDM.TblAdmin
+
+
 @{
     ViewData["Title"] = "Register";
     Layout = "~/Areas/Patient/Views/Shared/_LayoutPatient.cshtml";
 }
 
-<main>
-    <div class="bg_color_2">
-        <div class="container margin_60_35">
-            <div id="register">
-                <h1>Please register to Findoctor!</h1>
-                <div class="row justify-content-center">
-                    <div class="col-md-5">
-                        <form>
-                            <div class="box_form">
-                                <div class="form-group">
-                                    <label>Name</label>
-                                    <input type="text" class="form-control" placeholder="Your name">
-                                </div>
-                                <div class="form-group">
-                                    <label>Last name</label>
-                                    <input type="text" class="form-control" placeholder="Your last name">
-                                </div>
-                                <div class="form-group">
-                                    <label>Email</label>
-                                    <input type="email" class="form-control" placeholder="Your email address">
-                                </div>
-                                <div class="form-group">
-                                    <label>Password</label>
-                                    <input type="password" class="form-control" id="password1" name="password1" placeholder="Your password">
-                                </div>
-                                <div class="form-group">
-                                    <label>Confirm password</label>
-                                    <input type="password" class="form-control" id="password2" name="password2" placeholder="Confirm password">
-                                </div>
-                                <div id="pass-info" class="clearfix"></div>
-                                <div class="checkbox-holder text-left">
-                                    <div class="checkbox_2">
-                                        <input type="checkbox" value="accept_2" id="check_2" name="check_2" checked>
-                                        <label for="check_2"><span>I Agree to the <strong>Terms &amp; Conditions</strong></span></label>
-                                    </div>
-                                </div>
-                                <div class="form-group text-center add_top_30">
-                                    <input class="btn_1" type="submit" value="Submit">
-                                </div>
-                            </div>
-                            <p class="text-center"><small>Has voluptua vivendum accusamus cu. Ut per assueverit temporibus dissentiet. Eum no atqui putant democritum, velit nusquam sententiae vis no.</small></p>
-                        </form>
+
+<div class="bg_color_2">
+    <div class="container margin_60_35">
+        <div id="login-2">
+            <h1>Register</h1>
+            <form asp-action="Register" asp-controller="Home">
+                <div class="box_form clearfix">
+                    <div class="box_Register last">
+
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <div class="form-group">
+                            <input asp-for="AdminFname" class="form-control" placeholder="Enter First name" />
+                            <span asp-validation-for="AdminFname" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <input asp-for="AdminLname" class="form-control" placeholder="Enter Last name" />
+                            <span asp-validation-for="AdminLname" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <input asp-for="AdminEmail" class="form-control" placeholder="Enter Email" type="email" />
+                            <span asp-validation-for="AdminEmail" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <input asp-for="AdminPassword" class="form-control" placeholder="Enter Password" type="password" />
+                            <span asp-validation-for="AdminPassword" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <input class="btn_1" type="submit" value="Register">
+                        </div>
                     </div>
                 </div>
-                <!-- /row -->
-            </div>
-            <!-- /register -->
+            </form>
         </div>
+        <!-- /login -->
     </div>
-</main>
+</div>
 
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
